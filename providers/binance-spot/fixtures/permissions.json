@@ -1,0 +1,13 @@
+{
+  "enableReading": true,
+  "ipRestrict": true,
+  "enableWithdrawals": false,
+  "enableInternalTransfer": false,
+  "enableMargin": false,
+  "enableFutures": false,
+  "permitsUniversalTransfer": false,
+  "enableVanillaOptions": false,
+  "enableSpotAndMarginTrading": false,
+  "enableFixApiTrade": false,
+  "enablePortfolioMarginTrading": false
+}

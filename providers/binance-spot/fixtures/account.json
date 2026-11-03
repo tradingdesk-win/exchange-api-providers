@@ -1,0 +1,12 @@
+{
+  "uid": 9007199254740993,
+  "accountType": "SPOT",
+  "updateTime": 1700000000000,
+  "balances": [
+    {
+      "asset": "BTC",
+      "free": "1.0",
+      "locked": "0"
+    }
+  ]
+}

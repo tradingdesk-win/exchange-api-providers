@@ -1,0 +1,256 @@
+{
+  "name": "Binance Spot",
+  "config": {
+    "schemaVersion": 2,
+    "timeoutSeconds": 15,
+    "pageSize": 1000,
+    "windowHours": 24,
+    "requestsPerMinute": 60,
+    "adapter": {
+      "id": "binance-spot",
+      "version": "1.0.0",
+      "namespace": "binance:production",
+      "walletType": "SPOT",
+      "origin": "https://api.binance.com",
+      "auth": {
+        "encoding": "hex",
+        "timestampFormat": "unix_ms",
+        "timestampQuery": "timestamp",
+        "signatureQuery": "signature",
+        "headers": {
+          "X-MBX-APIKEY": "$apiKey"
+        },
+        "parameters": {
+          "recvWindow": "5000"
+        },
+        "prehash": [
+          "$query"
+        ]
+      },
+      "operations": {
+        "/price": {
+          "path": "/api/v3/ticker/price",
+          "authenticated": false,
+          "weight": 4
+        },
+        "/time": {
+          "path": "/api/v3/time",
+          "authenticated": false,
+          "weight": 1
+        },
+        "/instruments": {
+          "path": "/api/v3/exchangeInfo",
+          "authenticated": false,
+          "weight": 20,
+          "defaults": {
+            "permissions": "SPOT",
+            "showPermissionSets": "false"
+          }
+        },
+        "/account": {
+          "path": "/api/v3/account",
+          "authenticated": true,
+          "weight": 20,
+          "defaults": {
+            "omitZeroBalances": "true"
+          }
+        },
+        "/permissions": {
+          "path": "/sapi/v1/account/apiRestrictions",
+          "authenticated": true,
+          "weight": 1,
+          "response": {
+            "fields": {
+              "read": {
+                "path": "enableReading"
+              },
+              "ipRestricted": {
+                "path": "ipRestrict"
+              },
+              "write0": {
+                "path": "enableWithdrawals"
+              },
+              "write1": {
+                "path": "enableInternalTransfer"
+              },
+              "write2": {
+                "path": "enableMargin"
+              },
+              "write3": {
+                "path": "enableFutures"
+              },
+              "write4": {
+                "path": "permitsUniversalTransfer"
+              },
+              "write5": {
+                "path": "enableVanillaOptions"
+              },
+              "write6": {
+                "path": "enableSpotAndMarginTrading"
+              },
+              "write7": {
+                "path": "enableFixApiTrade"
+              },
+              "write8": {
+                "path": "enablePortfolioMarginTrading"
+              }
+            }
+          }
+        },
+        "/fills": {
+          "path": "/api/v3/myTrades",
+          "authenticated": true,
+          "weight": 20
+        },
+        "/dust": {
+          "path": "/sapi/v1/asset/dribblet",
+          "authenticated": true,
+          "weight": 1,
+          "quota": {
+            "scope": "ip",
+            "limitPerMinute": 12000,
+            "perSecond": 0,
+            "usageHeader": "X-SAPI-USED-IP-WEIGHT-1M"
+          }
+        },
+        "/deposits": {
+          "path": "/sapi/v1/capital/deposit/hisrec",
+          "authenticated": true,
+          "weight": 1,
+          "quota": {
+            "scope": "ip",
+            "limitPerMinute": 12000,
+            "perSecond": 0,
+            "usageHeader": "X-SAPI-USED-IP-WEIGHT-1M"
+          }
+        },
+        "/withdrawals": {
+          "path": "/sapi/v1/capital/withdraw/history",
+          "authenticated": true,
+          "weight": 18000,
+          "quota": {
+            "scope": "account",
+            "limitPerMinute": 180000,
+            "perSecond": 10,
+            "usageHeader": "X-SAPI-USED-UID-WEIGHT-1M"
+          }
+        },
+        "/transfers": {
+          "path": "/sapi/v1/asset/transfer",
+          "authenticated": true,
+          "weight": 1,
+          "quota": {
+            "scope": "ip",
+            "limitPerMinute": 12000,
+            "perSecond": 0,
+            "usageHeader": "X-SAPI-USED-IP-WEIGHT-1M"
+          }
+        },
+        "/distributions": {
+          "path": "/sapi/v1/asset/assetDividend",
+          "authenticated": true,
+          "weight": 10,
+          "quota": {
+            "scope": "ip",
+            "limitPerMinute": 12000,
+            "perSecond": 0,
+            "usageHeader": "X-SAPI-USED-IP-WEIGHT-1M"
+          }
+        },
+        "/conversions": {
+          "path": "/sapi/v1/convert/tradeFlow",
+          "authenticated": true,
+          "weight": 3000,
+          "quota": {
+            "scope": "account",
+            "limitPerMinute": 180000,
+            "perSecond": 0,
+            "usageHeader": "X-SAPI-USED-UID-WEIGHT-1M"
+          }
+        },
+        "/samples": {
+          "path": "/api/v3/aggTrades",
+          "authenticated": false,
+          "weight": 4
+        },
+        "/candles": {
+          "path": "/api/v3/klines",
+          "authenticated": false,
+          "weight": 2
+        }
+      },
+      "permissionWrites": [
+        "write0",
+        "write1",
+        "write2",
+        "write3",
+        "write4",
+        "write5",
+        "write6",
+        "write7",
+        "write8"
+      ],
+      "usageHeaderPrefix": "X-MBX-USED-WEIGHT-",
+      "errors": {
+        "-1021": "CLOCK_SKEW",
+        "-1022": "AUTHENTICATION_FAILED",
+        "-2014": "AUTHENTICATION_FAILED",
+        "-2015": "AUTHENTICATION_FAILED",
+        "-1121": "SYMBOL_UNAVAILABLE",
+        "-1002": "SOURCE_PROBE_REQUIRED"
+      },
+      "stream": {
+        "url": "wss://ws-api.binance.com:443/ws-api/v3",
+        "subscribeMethod": "userDataStream.subscribe.signature",
+        "unsubscribeMethod": "userDataStream.unsubscribe",
+        "params": {
+          "apiKey": "$apiKey",
+          "timestamp": "$unix_ms",
+          "recvWindow": "5000"
+        },
+        "signatureField": "signature",
+        "prehash": [
+          "$query"
+        ],
+        "encoding": "hex",
+        "lifetimeSeconds": 85800
+      },
+      "transferDirections": {
+        "MAIN_UMFUTURE": -1,
+        "MAIN_CMFUTURE": -1,
+        "MAIN_MARGIN": -1,
+        "MAIN_FUNDING": -1,
+        "MAIN_OPTION": -1,
+        "MAIN_PORTFOLIO_MARGIN": -1,
+        "UMFUTURE_MAIN": 1,
+        "CMFUTURE_MAIN": 1,
+        "MARGIN_MAIN": 1,
+        "FUNDING_MAIN": 1,
+        "OPTION_MAIN": 1,
+        "PORTFOLIO_MARGIN_MAIN": 1
+      },
+      "pagination": {
+        "cursorParameter": "fromId",
+        "cursorMode": "inclusive_numeric",
+        "direction": "ascending"
+      },
+      "permissionPrefixes": [
+        "enable",
+        "permit"
+      ],
+      "permissionAllowed": [
+        "enableReading",
+        "enableFixReadOnly",
+        "enableWithdrawals",
+        "enableInternalTransfer",
+        "enableMargin",
+        "enableFutures",
+        "permitsUniversalTransfer",
+        "enableVanillaOptions",
+        "enableSpotAndMarginTrading",
+        "enableFixApiTrade",
+        "enablePortfolioMarginTrading"
+      ]
+    }
+  }
+}

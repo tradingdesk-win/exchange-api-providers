@@ -1,0 +1,8 @@
+.DS_Store
+.env
+.env.*
+*.db
+*.sqlite*
+*.key
+*.pem
+__pycache__/

@@ -1,0 +1,327 @@
+{
+  "$defs": {
+    "AdapterDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "auth": {
+          "$ref": "#/$defs/AuthDefinition"
+        },
+        "errorPath": {
+          "type": "string"
+        },
+        "errors": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "id": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "operations": {
+          "additionalProperties": {
+            "$ref": "#/$defs/OperationDefinition"
+          },
+          "type": "object"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "pagination": {
+          "$ref": "#/$defs/PaginationDefinition"
+        },
+        "permissionAllowed": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "permissionPrefixes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "permissionWrites": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "stream": {
+          "$ref": "#/$defs/StreamDefinition"
+        },
+        "transferDirections": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "usageHeaderPrefix": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "walletType": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "AuthDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "encoding": {
+          "type": "string"
+        },
+        "headers": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "parameters": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "passphraseRequired": {
+          "type": "boolean"
+        },
+        "prehash": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "signatureQuery": {
+          "type": "string"
+        },
+        "timestampFormat": {
+          "type": "string"
+        },
+        "timestampQuery": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Config": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter": {
+          "$ref": "#/$defs/AdapterDefinition"
+        },
+        "connectorKey": {
+          "type": "string"
+        },
+        "endpointPreset": {
+          "type": "string"
+        },
+        "pageSize": {
+          "type": "integer"
+        },
+        "requestsPerMinute": {
+          "type": "integer"
+        },
+        "schemaVersion": {
+          "const": 2
+        },
+        "timeoutSeconds": {
+          "type": "integer"
+        },
+        "windowHours": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "timeoutSeconds",
+        "pageSize",
+        "windowHours",
+        "requestsPerMinute",
+        "adapter"
+      ],
+      "type": "object"
+    },
+    "OperationDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "authenticated": {
+          "type": "boolean"
+        },
+        "defaults": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "parameters": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "path": {
+          "type": "string"
+        },
+        "quota": {
+          "$ref": "#/$defs/QuotaDefinition"
+        },
+        "response": {
+          "$ref": "#/$defs/ValueMapping"
+        },
+        "success": {
+          "$ref": "#/$defs/ResponseCondition"
+        },
+        "weight": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "PaginationDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "cursorMode": {
+          "type": "string"
+        },
+        "cursorParameter": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "QuotaDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "limitPerMinute": {
+          "type": "integer"
+        },
+        "perSecond": {
+          "type": "integer"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "usageHeader": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ResponseCondition": {
+      "additionalProperties": false,
+      "properties": {
+        "equals": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "StreamDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "encoding": {
+          "type": "string"
+        },
+        "event": {
+          "$ref": "#/$defs/ValueMapping"
+        },
+        "lifetimeSeconds": {
+          "type": "integer"
+        },
+        "params": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "prehash": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "response": {
+          "$ref": "#/$defs/ValueMapping"
+        },
+        "signatureField": {
+          "type": "string"
+        },
+        "subscribeMethod": {
+          "type": "string"
+        },
+        "unsubscribeMethod": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TemplateExport": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/$defs/Config"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "config"
+      ],
+      "type": "object"
+    },
+    "ValueMapping": {
+      "additionalProperties": false,
+      "properties": {
+        "constant": {},
+        "convert": {
+          "type": "string"
+        },
+        "each": {
+          "$ref": "#/$defs/ValueMapping"
+        },
+        "enum": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "fields": {
+          "additionalProperties": {
+            "$ref": "#/$defs/ValueMapping"
+          },
+          "type": "object"
+        },
+        "path": {
+          "type": "string"
+        },
+        "productPaths": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "$ref": "#/$defs/TemplateExport",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Structural adapter schema; runtime validation additionally enforces capabilities, destinations, bounds, authentication and permissions."
+}

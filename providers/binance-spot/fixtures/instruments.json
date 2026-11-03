@@ -1,0 +1,11 @@
+{
+  "symbols": [
+    {
+      "symbol": "BTCUSDT",
+      "baseAsset": "BTC",
+      "quoteAsset": "USDT",
+      "status": "TRADING"
+    }
+  ],
+  "rateLimits": []
+}
